@@ -5,7 +5,7 @@
 //  property of any third parties.
 
 #include <pybind11/pybind11.h>
-#include "cuda_util.h"
+#include "warp.h"
 
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
@@ -34,6 +34,14 @@ PYBIND11_MODULE(warp_core, m) {
         Add two numbers
 
         Some other explanation about the add function.
+    )pbdoc");
+
+    m.def("cuda_driver_version", &cuda_driver_version, R"pbdoc(
+        Get Cuda version
+    )pbdoc");
+
+    m.def("cuda_toolkit_version", &cuda_toolkit_version, R"pbdoc(
+        Get Cuda toolkit version
     )pbdoc");
 
     m.def("subtract", [](int i, int j) { return i - j; }, R"pbdoc(

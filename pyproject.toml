@@ -33,7 +33,6 @@ wheel.expand-macos-universal-tags = true
 
 [tool.scikit-build.cmake.define]
 CMAKE_CUDA_ARCHITECTURES = "native"
-CMAKE_BUILD_TYPE = "Release"
 
 [tool.pytest.ini_options]
 minversion = "6.0"

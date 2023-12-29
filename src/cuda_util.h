@@ -45,44 +45,6 @@
 #endif// _DEBUG
 #endif// defined(__CUDACC__)
 
-CUresult cuDriverGetVersion_f(int *version);
-CUresult cuGetErrorName_f(CUresult result, const char **pstr);
-CUresult cuGetErrorString_f(CUresult result, const char **pstr);
-CUresult cuInit_f(unsigned int flags);
-CUresult cuDeviceGet_f(CUdevice *dev, int ordinal);
-CUresult cuDeviceGetCount_f(int *count);
-CUresult cuDeviceGetName_f(char *name, int len, CUdevice dev);
-CUresult cuDeviceGetAttribute_f(int *value, CUdevice_attribute attrib, CUdevice dev);
-CUresult cuDevicePrimaryCtxRetain_f(CUcontext *ctx, CUdevice dev);
-CUresult cuDevicePrimaryCtxRelease_f(CUdevice dev);
-CUresult cuDeviceCanAccessPeer_f(int *can_access, CUdevice dev, CUdevice peer_dev);
-CUresult cuCtxGetCurrent_f(CUcontext *ctx);
-CUresult cuCtxSetCurrent_f(CUcontext ctx);
-CUresult cuCtxPushCurrent_f(CUcontext ctx);
-CUresult cuCtxPopCurrent_f(CUcontext *ctx);
-CUresult cuCtxSynchronize_f();
-CUresult cuCtxGetDevice_f(CUdevice *dev);
-CUresult cuCtxCreate_f(CUcontext *ctx, unsigned int flags, CUdevice dev);
-CUresult cuCtxDestroy_f(CUcontext ctx);
-CUresult cuCtxEnablePeerAccess_f(CUcontext peer_ctx, unsigned int flags);
-CUresult cuStreamCreate_f(CUstream *stream, unsigned int flags);
-CUresult cuStreamDestroy_f(CUstream stream);
-CUresult cuStreamSynchronize_f(CUstream stream);
-CUresult cuStreamWaitEvent_f(CUstream stream, CUevent event, unsigned int flags);
-CUresult cuEventCreate_f(CUevent *event, unsigned int flags);
-CUresult cuEventDestroy_f(CUevent event);
-CUresult cuEventRecord_f(CUevent event, CUstream stream);
-CUresult cuModuleUnload_f(CUmodule hmod);
-CUresult cuModuleLoadDataEx_f(CUmodule *module, const void *image, unsigned int numOptions, CUjit_option *options, void **optionValues);
-CUresult cuModuleGetFunction_f(CUfunction *hfunc, CUmodule hmod, const char *name);
-CUresult cuLaunchKernel_f(CUfunction f, unsigned int gridDimX, unsigned int gridDimY, unsigned int gridDimZ, unsigned int blockDimX, unsigned int blockDimY, unsigned int blockDimZ, unsigned int sharedMemBytes, CUstream hStream, void **kernelParams, void **extra);
-CUresult cuMemcpyPeerAsync_f(CUdeviceptr dst_ptr, CUcontext dst_ctx, CUdeviceptr src_ptr, CUcontext src_ctx, size_t n, CUstream stream);
-CUresult cuGraphicsMapResources_f(unsigned int count, CUgraphicsResource *resources, CUstream stream);
-CUresult cuGraphicsUnmapResources_f(unsigned int count, CUgraphicsResource *resources, CUstream hStream);
-CUresult cuGraphicsResourceGetMappedPointer_f(CUdeviceptr *pDevPtr, size_t *pSize, CUgraphicsResource resource);
-CUresult cuGraphicsGLRegisterBuffer_f(CUgraphicsResource *pCudaResource, unsigned int buffer, unsigned int flags);
-CUresult cuGraphicsUnregisterResource_f(CUgraphicsResource resource);
-
 bool init_cuda_driver();
 
 bool check_cuda_result(cudaError_t code, const char *file, int line);
@@ -116,8 +78,8 @@ public:
     explicit ContextGuard(CUcontext context, bool restore = always_restore)
         : need_restore(false) {
         if (context) {
-            if (check_cu(cuCtxGetCurrent_f(&prev_context)) && context != prev_context)
-                need_restore = check_cu(cuCtxSetCurrent_f(context)) && restore;
+            if (check_cu(cuCtxGetCurrent(&prev_context)) && context != prev_context)
+                need_restore = check_cu(cuCtxSetCurrent(context)) && restore;
         }
     }
 
@@ -127,7 +89,7 @@ public:
 
     ~ContextGuard() {
         if (need_restore)
-            check_cu(cuCtxSetCurrent_f(prev_context));
+            check_cu(cuCtxSetCurrent(prev_context));
     }
 
 private:
