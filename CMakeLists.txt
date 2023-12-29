@@ -9,4 +9,6 @@ find_package(CUDAToolkit)
 set(CMAKE_CUDA_ARCHITECTURES 90)
 include_directories(${CUDA_INCLUDE_DIRS})
 
-#add_subdirectory(runtime)
+add_subdirectory(warp-header)
+add_subdirectory(runtime)
+add_subdirectory(python)
