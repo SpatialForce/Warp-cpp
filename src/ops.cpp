@@ -42,9 +42,5 @@ PYBIND11_MODULE(warp_core, m) {
         Some other explanation about the subtract function.
     )pbdoc");
 
-#ifdef VERSION_INFO
-    m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
-#else
     m.attr("__version__") = "dev";
-#endif
 }

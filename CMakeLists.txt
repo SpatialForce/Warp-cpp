@@ -25,14 +25,30 @@ set(COMMON_FILES
         src/ops.cpp
         src/cuda_util.h
         src/cuda_util.cpp
+        src/warp.h
+        src/warp.cpp
+        src/warp.cu
+        src/scan.h
+        src/scan.cpp
+        src/scan.cu
 )
 
 # Add a library using FindPython's tooling (pybind11 also provides a helper like this)
 python_add_library(warp_core MODULE ${COMMON_FILES} WITH_SOABI)
-target_link_libraries(warp_core PRIVATE pybind11::headers CUDA::cuda_driver CUDA::cudart)
+
+set_property(TARGET warp_core PROPERTY
+        MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
+target_link_libraries(warp_core PRIVATE
+        pybind11::headers
+        CUDA::cudart_static
+        CUDA::nvrtc_static
+        CUDA::nvrtc_builtins_static
+        CUDA::nvptxcompiler_static
+)
 
 target_include_directories(warp_core PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR} .
+        ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 target_compile_definitions(warp_core PRIVATE
