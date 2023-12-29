@@ -11,6 +11,9 @@ project(runtime LANGUAGES C CXX CUDA)
 set(COMMON_FILES
         cuda_util.h
         cuda_util.cpp
+#        warp.h
+#        warp.cpp
+#        warp.cu
 )
 
 set(TYPE_FILES
@@ -35,6 +38,15 @@ set(PROJECT_FILES
 
 add_library(${PROJECT_NAME} OBJECT ${PROJECT_FILES})
 set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+target_compile_definitions(${PROJECT_NAME} PUBLIC
+        WP_ENABLE_CUDA_COMPATIBILITY=1
+        WP_ENABLE_CUDA=1
+        WP_ENABLE_CUTLASS=0
+        WP_ENABLE_DEBUG=0
+)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE CUDA::cuda_driver)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR} .

@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include <pybind11/pybind11.h>
+#include "cuda_util.h"
 
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)

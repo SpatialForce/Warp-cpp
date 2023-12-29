@@ -6,14 +6,14 @@
 
 #pragma once
 
-#include "core/builtin.h"
+#include "warp-header/core/builtin.h"
 
 #if WP_ENABLE_CUDA
 
 #include <cudaTypedefs.h>
 #include <cuda_runtime_api.h>
 
-#include <stdio.h>
+#include <cstdio>
 
 #define check_cuda(code) (check_cuda_result(code, __FILE__, __LINE__))
 #define check_cu(code) (check_cu_result(code, __FILE__, __LINE__))

@@ -7,7 +7,7 @@ build-backend = "scikit_build_core.build"
 name = "warp_runtime_py"
 version = "0.0.1"
 description="warp runtime"
-readme = "../README.md"
+readme = "README.md"
 authors = [
   { name = "My Name", email = "me@email.com" },
 ]
@@ -31,6 +31,8 @@ test = ["pytest"]
 [tool.scikit-build]
 wheel.expand-macos-universal-tags = true
 
+[tool.scikit-build.cmake.define]
+CMAKE_CUDA_ARCHITECTURES = "native"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
