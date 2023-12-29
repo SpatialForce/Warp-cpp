@@ -6,7 +6,10 @@
 
 cmake_minimum_required(VERSION 3.27)
 
-project(warp-py LANGUAGES CXX)
+project(
+        ${SKBUILD_PROJECT_NAME}
+        VERSION ${SKBUILD_PROJECT_VERSION}
+        LANGUAGES CXX)
 
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED)
@@ -16,8 +19,10 @@ set(COMMON_FILES
 )
 
 # Add a library using FindPython's tooling (pybind11 also provides a helper like this)
-python_add_library(py_core MODULE ${COMMON_FILES} WITH_SOABI)
-target_link_libraries(py_core PRIVATE pybind11::headers)
+python_add_library(warp_core MODULE ${COMMON_FILES} WITH_SOABI)
+target_link_libraries(warp_core PRIVATE pybind11::headers)
+
+target_compile_definitions(warp_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
 
 # The install directory is the output (wheel) directory
-install(TARGETS py_core DESTINATION warp-py)
+install(TARGETS warp_core DESTINATION warp_runtime_py)
