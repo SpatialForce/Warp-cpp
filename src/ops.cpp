@@ -5,10 +5,7 @@
 //  property of any third parties.
 
 #include <pybind11/pybind11.h>
-#include "warp.h"
-
-#define STRINGIFY(x) #x
-#define MACRO_STRINGIFY(x) STRINGIFY(x)
+#include "runtime/warp.h"
 
 int add(int i, int j) {
     return i + j;
@@ -18,16 +15,18 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(warp_core, m) {
     m.doc() = R"pbdoc(
-        Pybind11 example plugin
+        Warp runtime
         -----------------------
 
-        .. currentmodule:: scikit_build_example
+        .. currentmodule:: warp_runtime_py
 
         .. autosummary::
            :toctree: _generate
 
            add
            subtract
+           cuda_driver_version
+           cuda_toolkit_version
     )pbdoc";
 
     m.def("add", &add, R"pbdoc(
@@ -42,6 +41,14 @@ PYBIND11_MODULE(warp_core, m) {
 
     m.def("cuda_toolkit_version", &cuda_toolkit_version, R"pbdoc(
         Get Cuda toolkit version
+    )pbdoc");
+
+    m.def("cuda_device_get_name", &cuda_device_get_name, R"pbdoc(
+        Get Cuda device name
+    )pbdoc");
+
+    m.def("init", &init, R"pbdoc(
+        init Cuda
     )pbdoc");
 
     m.def("subtract", [](int i, int j) { return i - j; }, R"pbdoc(

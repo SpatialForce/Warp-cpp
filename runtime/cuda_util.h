@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "warp-header/core/builtin.h"
+#include "core/builtin.h"
 
 #if WP_ENABLE_CUDA
 

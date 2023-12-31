@@ -11,9 +11,12 @@ project(runtime LANGUAGES C CXX CUDA)
 set(COMMON_FILES
         cuda_util.h
         cuda_util.cpp
-#        warp.h
-#        warp.cpp
-#        warp.cu
+        warp.h
+        warp.cpp
+        warp.cu
+        scan.h
+        scan.cpp
+        scan.cu
 )
 
 set(TYPE_FILES
@@ -36,8 +39,17 @@ set(PROJECT_FILES
         ${COMMON_FILES}
 )
 
-add_library(${PROJECT_NAME} OBJECT ${PROJECT_FILES})
-set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+add_library(${PROJECT_NAME} STATIC ${PROJECT_FILES})
+
+set_property(TARGET ${PROJECT_NAME} PROPERTY
+        MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
+        CUDA::cudart_static
+        CUDA::nvrtc_static
+        CUDA::nvrtc_builtins_static
+        CUDA::nvptxcompiler_static
+)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC
         WP_ENABLE_CUDA_COMPATIBILITY=1
@@ -45,8 +57,6 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC
         WP_ENABLE_CUTLASS=0
         WP_ENABLE_DEBUG=0
 )
-
-target_link_libraries(${PROJECT_NAME} PRIVATE CUDA::cuda_driver)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR} .

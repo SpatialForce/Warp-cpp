@@ -7,8 +7,8 @@
 #pragma once
 
 // defines all crt + builtin types
-#include "warp-header/core/vec.h"
-#include "warp-header/core/array.h"
+#include "core/vec.h"
+#include "core/array.h"
 
 // this is the core runtime API exposed on the DLL level
 extern "C" {

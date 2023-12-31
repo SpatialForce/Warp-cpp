@@ -6,10 +6,8 @@
 
 #include "warp.h"
 #include "scan.h"
-#include "warp-header/core/array.h"
-#include "warp-header/core/fabric.h"
-
-#include "exports.h"
+#include "core/array.h"
+#include "core/fabric.h"
 
 #include <cstdlib>
 #include <cstring>

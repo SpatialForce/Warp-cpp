@@ -13,6 +13,8 @@ enable_language(CUDA)
 find_package(CUDAToolkit)
 include_directories(${CUDA_INCLUDE_DIRS})
 
+add_subdirectory(runtime)
+
 project(
         ${SKBUILD_PROJECT_NAME}
         VERSION ${SKBUILD_PROJECT_VERSION}
@@ -23,14 +25,6 @@ find_package(pybind11 CONFIG REQUIRED)
 
 set(COMMON_FILES
         src/ops.cpp
-        src/cuda_util.h
-        src/cuda_util.cpp
-        src/warp.h
-        src/warp.cpp
-        src/warp.cu
-        src/scan.h
-        src/scan.cpp
-        src/scan.cu
 )
 
 # Add a library using FindPython's tooling (pybind11 also provides a helper like this)
@@ -41,14 +35,12 @@ set_property(TARGET warp_core PROPERTY
 
 target_link_libraries(warp_core PRIVATE
         pybind11::headers
-        CUDA::cudart_static
-        CUDA::nvrtc_static
-        CUDA::nvrtc_builtins_static
-        CUDA::nvptxcompiler_static
+        runtime
 )
 
 target_include_directories(warp_core PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
+        ../warp-header
 )
 
 target_compile_definitions(warp_core PRIVATE

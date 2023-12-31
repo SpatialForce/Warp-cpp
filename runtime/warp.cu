@@ -7,7 +7,7 @@
 #include "warp.h"
 #include "scan.h"
 #include "cuda_util.h"
-#include "warp-header/core/fabric.h"
+#include "core/fabric.h"
 
 #include <nvrtc.h>
 #include <nvPTXCompiler.h>
